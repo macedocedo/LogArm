@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <link rel="stylesheet" href="./css/swiper-bundle.min.css">
+  <link rel="stylesheet" href="./css/styles1.css">
+  <title>AppLogArm - Estoque</title>
+  <style>
+    :root {
+      --body-color: #f5f5f5;
+      --text-color: #333;
+      --container-bg: #fff;
+      --border-color: #e0e0e0;
+      --primary-color: #4CAF50;
+      --primary-hover: #3e8e41;
+      --secondary-color: #2196F3;
+      --secondary-hover: #0b7dda;
+      --input-focus-bg: rgba(126, 126, 126, 0.1);
+      --item-bg: #fff;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --header-bg: #f5f5f5;
+      --header-text: #555;
+      --even-row-bg: #f9f9f9;
+      --hover-row-bg: #f0f0f0;
+      --action-btn-color: #666;
+      --warning-color: #FF9800;
+      --danger-color: #F44336;
+      --modal-bg: rgba(0, 0, 0, 0.5);
+      --modal-content-bg: #f5f5f5;
+      --success-color: #4CAF50;
+    }
+
+    .dark-theme {
+      --body-color: #121212;
+      --text-color: #e0e0e0;
+      --container-bg: #1e1e1e;
+      --border-color: #333;
+      --input-focus-bg: rgba(200, 200, 200, 0.1);
+      --item-bg: #2d2d2d;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --header-bg: #252525;
+      --header-text: #aaa;
+      --even-row-bg: #252525;
+      --hover-row-bg: #333;
+      --action-btn-color: #aaa;
+      --modal-content-bg: #2d2d2d;
+    }
+
+    body {
+      background-color: var(--body-color);
+      color: var(--text-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+    }
+
+    .stock-container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      transition: background-color 0.3s ease;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    
+    .stock-header {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+    
+    .stock-header h1 {
+        margin: 0;
+        font-size: 50px;
+        color: var(--primary-color);
+        text-align: center; /* Centraliza o texto horizontalmente */
+        font-family: 'Poppins' /* Fonte importada */
+    }
+    
+    .search-add-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    #search {
+      border: 2px solid var(--border-color);
+      background-color: var(--container-bg);
+      color: var(--text-color);
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-size: 16px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    
+    #search:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      background-color: var(--input-focus-bg);
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+    }
+    
+    .btn {
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary {
+      background-color: var(--secondary-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--secondary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stock-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .stock-item {
+      background-color: var(--item-bg);
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 3px 6px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+    
+    .stock-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px var(--shadow-color);
+    }
+    
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .item-code {
+      font-weight: bold;
+      color: var(--text-color);
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    .item-name {
+      font-weight: bold;
+      font-size: 18px;
+      margin: 5px 0;
+      color: var(--text-color);
+    }
+    
+    .item-detail {
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+    }
+    
+    .detail-label {
+      font-weight: bold;
+      color: var(--text-color);
+      opacity: 0.8;
+    }
+    
+    .stock-warning {
+      color: var(--warning-color);
+      font-weight: bold;
+    }
+    
+    .stock-danger {
+      color: var(--danger-color);
+      font-weight: bold;
+    }
+    
+    .stock-zero {
+      color: var(--danger-color);
+      font-weight: bold;
+      background-color: rgba(244, 67, 54, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    
+    .item-warning {
+      border-left-color: var(--warning-color);
+      background-color: rgba(255, 152, 0, 0.05);
+    }
+    
+    .item-danger {
+      border-left-color: var(--danger-color);
+      background-color: rgba(244, 67, 54, 0.05);
+    }
+    
+    .item-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      color: var(--action-btn-color);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 16px;
+    }
+    
+    .action-btn:hover {
+      background-color: rgba(126, 126, 126, 0.1);
+      transform: scale(1.05);
+    }
+    
+    .edit-btn {
+      color: var(--primary-color);
+    }
+    
+    .edit-btn:hover {
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+    
+    .delete-btn {
+      color: var(--danger-color);
+    }
+    
+    .delete-btn:hover {
+      background-color: rgba(244, 67, 54, 0.1);
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--modal-bg);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background-color: var(--modal-content-bg);
+      padding: 25px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .modal-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--primary-color);
+      margin: 0;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: var(--text-color);
+    }
+    
+    .form-group input, 
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background-color: var(--container-bg);
+      color: var(--text-color);
+    }
+    
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .save-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+    }
+    
+    .save-btn:hover {
+      background-color: var(--primary-hover);
+    }
+    
+    .cancel-btn {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+    }
+    
+    .cancel-btn:hover {
+      background-color: rgba(126, 126, 126, 0.1);
+    }
+    
+    .delete-modal-btn {
+      background-color: var(--danger-color);
+      color: white;
+      border: none;
+    }
+    
+    .delete-modal-btn:hover {
+      background-color: #d32f2f;
+    }
+    
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .alert-success {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: var(--success-color);
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .alert-error {
+      background-color: rgba(244, 67, 54, 0.2);
+      color: var(--danger-color);
+      border-left: 4px solid var(--danger-color);
+    }
+    
+    .stock-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      background-color: var(--item-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px var(--shadow-color);
+      transition: all 0.3s ease;
+    }
+    
+    .stock-table th {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      font-weight: bold;
+      padding: 15px;
+      text-align: left;
+      font-size: 15px;
+    }
+    
+    .stock-table td {
+      padding: 15px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-color);
+      font-size: 15px;
+    }
+    
+    .stock-table tr:nth-child(even) {
+      background-color: var(--even-row-bg);
+    }
+    
+    .stock-table tr:hover {
+      background-color: var(--hover-row-bg);
+    }
+    
+    .stock-table .action-cell {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .row-warning td:nth-child(3) {
+      color: var(--warning-color);
+      font-weight: bold;
+    }
+    
+    .row-warning:hover {
+      background-color: rgba(255, 152, 0, 0.05) !important;
+    }
+    
+    .row-danger td:nth-child(3) {
+      color: var(--danger-color);
+      font-weight: bold;
+    }
+    
+    .row-danger:hover {
+      background-color: rgba(244, 67, 54, 0.05) !important;
+    }
+    
+    .row-zero td:nth-child(3) {
+      color: var(--danger-color);
+      font-weight: bold;
+      background-color: rgba(244, 67, 54, 0.1);
+    }
+    
+    @media (min-width: 768px) {
+      .stock-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 140px;
+      }
+      
+      .search-add-container {
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      #search {
+        width: 350px;
+        margin-bottom: 0;
+      }
+      
+      .btn {
+        width: auto;
+        padding: 12px 25px;
+      }
+      
+      .stock-list {
+        display: none;
+      }
+      
+      .stock-table {
+        display: table;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .stock-table {
+        display: none;
+      }
+      
+      .stock-list {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/img/favicon.png" alt="" class="nav__logo-img"> 
+        LogArm
+      </a>
+
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="index.html" class="nav__link">Início</a></li>
+          <li class="nav__item"><a href="Lista.html" class="nav__link">Registro</a></li>
+          <li class="nav__item"><a href="Estoque-Saida.html" class="nav__link">Saida</a></li>
+          <li class="nav__item"><a href="Filtro.html" class="nav__link">Calculo</a></li>
+          <li class="nav__item"><a href="Estoque-Atual.html" class="nav__link active-link">Estoque</a></li>
+        </ul>
+
+        <div class="nav__close" id="nav-close">
+          <i class='bx bx-x'></i>
+        </div>
+      </div>
+      <div class="nav__btns">
+        <i class='bx bx-moon change-theme' id="theme-button" title="Trocar tema"></i>
+        <div class="nav__toggle" id="nav-toggle">
+          <i class='bx bx-grid-alt'></i>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="stock-container">
+    <div class="stock-header">
+      <h1></h1>
+      <div class="search-add-container">
+        <input type="text" id="search" placeholder="🔎 Pesquisar item..." oninput="filterStock()">
+        </button>
+      </div>
+    </div>
+
+    <div id="alertContainer"></div>
+
+    <table class="stock-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Item</th>
+          <th>Quantidade</th>
+          <th>Localização</th>
+          <th>Última Mov.</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="stock-table-body">
+        <!-- Itens serão inseridos aqui via JavaScript -->
+      </tbody>
+    </table>
+
+    <div class="stock-list" id="stock-list">
+      <!-- Itens serão inseridos aqui via JavaScript -->
+    </div>
+  </div>
+
+  <!-- Modal de Edição -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <form id="editForm">
+        <div class="form-group">
+          <h1 for="editCode">📝Editar</h1>
+          <br>
+          <label for="editCode">Código</label>
+          <input type="text" id="editCode" readonly>
+        </div>
+        <div class="form-group">
+          <label for="editName">Nome do Item</label>
+          <input type="text" id="editName" required>
+        </div>
+        <div class="form-group">
+          <label for="editQuantity">Quantidade</label>
+          <input type="number" id="editQuantity" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="editLocation">Localização</label>
+          <input type="text" id="editLocation">
+        </div>
+        <div class="form-group">
+          <label for="editNotes">Observações</label>
+          <textarea id="editNotes"></textarea>
+        </div>
+        <div class="modal-actions">
+
+          </button>
+          <button type="button" class="modal-btn cancel-btn" onclick="closeModal()">Cancelar</button>
+          <button type="submit" class="modal-btn save-btn">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Adição -->
+  <div class="modal" id="addModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Adicionar Novo Item</h3>
+        <button class="close-modal" onclick="closeAddModal()">&times;</button>
+      </div>
+      <form id="addForm">
+        <div class="form-group">
+          <label for="addName">Nome do Item</label>
+          <input type="text" id="addName" required>
+        </div>
+        <div class="form-group">
+          <label for="addQuantity">Quantidade Inicial</label>
+          <input type="number" id="addQuantity" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="addLocation">Localização</label>
+          <input type="text" id="addLocation">
+        </div>
+        <div class="form-group">
+          <label for="addNotes">Observações</label>
+          <textarea id="addNotes"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn cancel-btn" onclick="closeAddModal()">Cancelar</button>
+          <button type="submit" class="modal-btn save-btn">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação -->
+  <div class="modal" id="confirmModal">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+      </div>
+      <div style="margin-bottom: 20px;">
+        <p>Tem certeza que deseja excluir este item permanentemente?</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="modal-btn cancel-btn" onclick="closeConfirmModal()">Cancelar</button>
+        <button type="button" class="modal-btn delete-modal-btn" onclick="deleteConfirmedItem()">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Dados do estoque
+    let stockData = JSON.parse(localStorage.getItem("estoqueData")) || [];
+    let currentStock = JSON.parse(localStorage.getItem("estoqueAtual")) || {};
+    let currentItemCode = 1;
+    let itemBeingEdited = null;
+    let lastAction = null;
+
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", function() {
+      // Verifica se há dados salvos e calcula o próximo código
+      const stockSummary = calculateCurrentStock();
+      const sortedItems = Object.keys(stockSummary).sort((a, b) => {
+        return stockSummary[a].code.localeCompare(stockSummary[b].code);
+      });
+      
+      if (sortedItems.length > 0) {
+        const lastCode = stockSummary[sortedItems[sortedItems.length - 1]].code;
+        currentItemCode = parseInt(lastCode) + 1;
+      }
+      
+      renderStock();
+      
+      // Configura os formulários
+      document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveItemChanges();
+      });
+      
+      document.getElementById('addForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        addNewItem();
+      });
+      
+      // Verifica se há uma ação recente para mostrar feedback
+      const action = localStorage.getItem('lastAction');
+      if (action) {
+        showAlert(action);
+        localStorage.removeItem('lastAction');
+      }
+    });
+
+    // Função para mostrar alerta
+    function showAlert(action) {
+      const alertContainer = document.getElementById('alertContainer');
+      let alert = document.createElement('div');
+      
+      if (action === 'add') {
+        alert.className = 'alert alert-success';
+        alert.innerHTML = `
+          <i class='bx bx-check-circle'></i>
+          Item adicionado com sucesso!
+        `;
+      } else if (action === 'edit') {
+        alert.className = 'alert alert-success';
+        alert.innerHTML = `
+          <i class='bx bx-check-circle'></i>
+          Item atualizado com sucesso!
+        `;
+      } else if (action === 'delete') {
+        alert.className = 'alert alert-error';
+        alert.innerHTML = `
+          <i class='bx bx-error-circle'></i>
+          Item excluído com sucesso!
+        `;
+      }
+      
+      alertContainer.appendChild(alert);
+      
+      // Remove o alerta após 5 segundos
+      setTimeout(() => {
+        alert.remove();
+      }, 5000);
+    }
+
+    // Função para calcular o estoque atual
+    function calculateCurrentStock() {
+      const stockSummary = {};
+      
+      stockData.forEach(item => {
+        if (!stockSummary[item.name]) {
+          stockSummary[item.name] = {
+            quantity: 0,
+            lastMovement: '',
+            location: '',
+            notes: '',
+            code: item.code || generateSequentialCode()
+          };
+        }
+        
+        if (item.operation === 'Entrada') {
+          stockSummary[item.name].quantity += item.quantity;
+        } else if (item.operation === 'Saida') {
+          stockSummary[item.name].quantity -= item.quantity;
+        }
+        
+        stockSummary[item.name].lastMovement = item.date;
+        stockSummary[item.name].location = item.prateleira;
+        stockSummary[item.name].notes = item.notes || '';
+        stockSummary[item.name].code = item.code || stockSummary[item.name].code;
+      });
+      
+      return stockSummary;
+    }
+
+    // Função para gerar código sequencial
+    function generateSequentialCode() {
+      const code = currentItemCode.toString().padStart(4, '0');
+      currentItemCode++;
+      return code;
+    }
+
+    // Função para renderizar o estoque
+    function renderStock() {
+      const stockSummary = calculateCurrentStock();
+      const tableBody = document.getElementById('stock-table-body');
+      const listContainer = document.getElementById('stock-list');
+      
+      tableBody.innerHTML = '';
+      listContainer.innerHTML = '';
+      
+      const sortedItems = Object.keys(stockSummary).sort((a, b) => {
+        return stockSummary[a].code.localeCompare(stockSummary[b].code);
+      });
+      
+      if (sortedItems.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 30px;">
+              Nenhum item encontrado no estoque.
+            </td>
+          </tr>
+        `;
+        
+        listContainer.innerHTML = `
+          <div class="stock-item" style="text-align: center; padding: 30px;">
+            Nenhum item encontrado no estoque.
+          </div>
+        `;
+        return;
+      }
+      
+      sortedItems.forEach(itemName => {
+        const item = stockSummary[itemName];
+        
+        let stockTextClass = '';
+        let rowClass = '';
+        let itemClass = '';
+        
+        if (item.quantity <= 0) {
+          stockTextClass = 'stock-zero';
+          rowClass = 'row-zero';
+          itemClass = 'stock-zero';
+        } else if (item.quantity < 3) {
+          stockTextClass = 'stock-danger';
+          rowClass = 'row-danger';
+          itemClass = 'item-danger';
+        } else if (item.quantity < 5) {
+          stockTextClass = 'stock-warning';
+          rowClass = 'row-warning';
+          itemClass = 'item-warning';
+        }
+        
+        const formattedDate = formatDate(item.lastMovement);
+        
+        // Renderização para desktop
+        const row = document.createElement('tr');
+        if (rowClass) row.classList.add(rowClass);
+        row.innerHTML = `
+          <td>${item.code}</td>
+          <td>${itemName}</td>
+          <td class="${stockTextClass}">${item.quantity}</td>
+          <td>${item.location || '-'}</td>
+          <td>${formattedDate}</td>
+          <td class="action-cell">
+            <button class="action-btn edit-btn" title="Editar" onclick="openEditModal('${itemName}')">
+              <i class='bx bx-edit'></i>
+            </button>
+            <button class="action-btn delete-btn" title="Excluir" onclick="confirmDelete('${itemName}')">
+              <i class='bx bx-trash'></i>
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+        
+        // Renderização para mobile
+        const listItem = document.createElement('div');
+        listItem.className = `stock-item ${itemClass}`;
+        listItem.innerHTML = `
+          <div class="item-header">
+            <span class="item-code">${item.code}</span>
+            <span class="${stockTextClass}">${item.quantity} em estoque</span>
+          </div>
+          <div class="item-name">${itemName}</div>
+          <div class="item-detail">
+            <span class="detail-label">Localização:</span>
+            <span>${item.location || '-'}</span>
+          </div>
+          <div class="item-detail">
+            <span class="detail-label">Última mov.:</span>
+            <span>${formattedDate}</span>
+          </div>
+          <div class="item-actions">
+            <button class="action-btn edit-btn" title="Editar" onclick="openEditModal('${itemName}')">
+              <i class='bx bx-edit'></i> Editar
+            </button>
+            <button class="action-btn delete-btn" title="Excluir" onclick="confirmDelete('${itemName}')">
+              <i class='bx bx-trash'></i> Excluir
+            </button>
+          </div>
+        `;
+        listContainer.appendChild(listItem);
+      });
+      
+      if (sortedItems.length > 0) {
+        const lastCode = stockSummary[sortedItems[sortedItems.length - 1]].code;
+        currentItemCode = parseInt(lastCode) + 1;
+      }
+    }
+
+    // Função para filtrar itens
+    function filterStock() {
+      const searchTerm = document.getElementById('search').value.trim().toLowerCase();
+      const rows = document.querySelectorAll('#stock-table-body tr');
+      const listItems = document.querySelectorAll('#stock-list .stock-item');
+      
+      rows.forEach(row => {
+        const itemName = row.cells[1].textContent.toLowerCase();
+        const itemCode = row.cells[0].textContent.toLowerCase();
+        row.style.display = (itemName.includes(searchTerm) || itemCode.includes(searchTerm)) ? '' : 'none';
+      });
+      
+      listItems.forEach(item => {
+        const itemName = item.querySelector('.item-name').textContent.toLowerCase();
+        const itemCode = item.querySelector('.item-code').textContent.toLowerCase();
+        item.style.display = (itemName.includes(searchTerm) || itemCode.includes(searchTerm)) ? '' : 'none';
+      });
+    }
+
+    // Função para formatar data
+    function formatDate(dateString) {
+      if (!dateString) return '-';
+      const date = new Date(dateString);
+      return date.toLocaleDateString('pt-BR');
+    }
+
+    // Funções para o modal de edição
+    function openEditModal(itemName) {
+      const stockSummary = calculateCurrentStock();
+      const item = stockSummary[itemName];
+      
+      if (item) {
+        itemBeingEdited = itemName;
+        document.getElementById('editCode').value = item.code;
+        document.getElementById('editName').value = itemName;
+        document.getElementById('editQuantity').value = item.quantity;
+        document.getElementById('editLocation').value = item.location || '';
+        document.getElementById('editNotes').value = item.notes || '';
+        
+        document.getElementById('editModal').style.display = 'flex';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+      itemBeingEdited = null;
+    }
+
+    function saveItemChanges() {
+      const newName = document.getElementById('editName').value.trim();
+      const newQuantity = parseInt(document.getElementById('editQuantity').value);
+      const newLocation = document.getElementById('editLocation').value.trim();
+      const newNotes = document.getElementById('editNotes').value.trim();
+      
+      if (!newName || isNaN(newQuantity)) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+      
+      const stockSummary = calculateCurrentStock();
+      const oldItem = stockSummary[itemBeingEdited];
+      const code = oldItem.code;
+      
+      // Remove todas as entradas antigas
+      stockData = stockData.filter(item => item.name !== itemBeingEdited);
+      
+      // Adiciona uma nova entrada com os dados atualizados
+      const now = new Date().toISOString();
+      const newEntry = {
+        name: newName,
+        quantity: newQuantity,
+        prateleira: newLocation,
+        notes: newNotes,
+        operation: 'Entrada',
+        date: now,
+        code: code
+      };
+      
+      stockData.push(newEntry);
+      
+      localStorage.setItem("estoqueData", JSON.stringify(stockData));
+      localStorage.setItem('lastAction', 'edit');
+      
+      renderStock();
+      closeModal();
+      showAlert('edit');
+    }
+
+    // Funções para o modal de adição
+    function openAddModal() {
+      document.getElementById('addModal').style.display = 'flex';
+    }
+
+    function closeAddModal() {
+      document.getElementById('addModal').style.display = 'none';
+    }
+
+    function addNewItem() {
+      const name = document.getElementById('addName').value.trim();
+      const quantity = parseInt(document.getElementById('addQuantity').value);
+      const location = document.getElementById('addLocation').value.trim();
+      const notes = document.getElementById('addNotes').value.trim();
+      
+      if (!name || isNaN(quantity)) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+      
+      const code = generateSequentialCode();
+      const now = new Date().toISOString();
+      
+      const newItem = {
+        name: name,
+        quantity: quantity,
+        prateleira: location,
+        notes: notes,
+        operation: 'Entrada',
+        date: now,
+        code: code
+      };
+      
+      stockData.push(newItem);
+      
+      localStorage.setItem("estoqueData", JSON.stringify(stockData));
+      localStorage.setItem('lastAction', 'add');
+      
+      renderStock();
+      closeAddModal();
+      showAlert('add');
+      
+      // Limpa o formulário
+      document.getElementById('addForm').reset();
+    }
+
+    // Funções para o modal de confirmação
+    function confirmDelete(itemName) {
+      itemBeingEdited = itemName;
+      document.getElementById('confirmModal').style.display = 'flex';
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('confirmModal').style.display = 'none';
+      itemBeingEdited = null;
+    }
+
+    function deleteConfirmedItem() {
+      if (itemBeingEdited) {
+        stockData = stockData.filter(item => item.name !== itemBeingEdited);
+        
+        localStorage.setItem("estoqueData", JSON.stringify(stockData));
+        localStorage.setItem('lastAction', 'delete');
+        
+        renderStock();
+        closeConfirmModal();
+        showAlert('delete');
+      }
+    }
+  </script>
+
+  <script src="./js/scrollreveal.min.js"></script>
+  <script src="./js/swiper-bundle.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>

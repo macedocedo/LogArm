@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicativo LogArm para controle logístico inteligente e eficiente">
+    <meta name="keywords" content="logística, controle de estoque, gestão, entrada, saída, registro">
+    <meta name="author" content="Mateus Macedo">
+
+    <!--=============== FAVICON ===============-->
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+
+    <!--=============== BOXICONS ===============-->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+
+    <!--=============== SWIPER CSS ===============-->
+    <link rel="stylesheet" href="./css/swiper-bundle.min.css">
+
+    <!--=============== GOOGLE FONTS ===============-->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <!--=============== CUSTOM CSS ===============-->
+    <link rel="stylesheet" href="./css/styles1.css">
+
+    <style>
+        :root {
+            /* Cores Light Mode (padrão) */
+
+            --title-color: #2c3e50;
+            --text-color: #34495e;
+            --text-color-light: #7f8c8d;
+            --body-color: #f9f9f9;
+            --container-color: #ffffff;
+            --border-color: #e0e0e0;
+            --white-color: #ffffff;
+            
+            /* Transições e efeitos */
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --gradient: linear-gradient(135deg, var(--first-color), var(--first-color-alt));
+        }
+
+
+        /* Estilos gerais aprimorados */
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.7;
+            background-color: var(--body-color);
+            color: var(--text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        h1, h2, h3, .section__title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--title-color);
+        }
+
+        /* Estilos aprimorados para centralização e layout */
+        @media screen and (min-width: 768px) {
+            .home,
+            .celebrate {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 70vh;
+            }
+
+            .home__buttons,
+            .footer__links {
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+                margin-top: 2.5rem;
+                flex-wrap: wrap;
+            }
+
+            .home__container,
+            .celebrate__container {
+                max-width: 1200px;
+                width: 100%;
+                padding: 0 2rem;
+            }
+
+            .home__container.grid,
+            .celebrate__container.grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                gap: 3rem;
+            }
+        }
+
+        /* Melhorias para mobile */
+        @media screen and (max-width: 767px) {
+            .home__buttons,
+            .footer__links {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            
+            .button {
+                width: 100%;
+                text-align: center;
+                padding: 1rem;
+            }
+            
+            .home__container.grid,
+            .celebrate__container.grid {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        /* Estilos aprimorados para botões */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            transform: translateY(0);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .button--primary {
+            background: var(--gradient);
+            color: var(--white-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button--primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0));
+            transition: var(--transition);
+        }
+
+        .button--primary:hover::after {
+            opacity: 1;
+        }
+
+        .button i {
+            font-size: 1.2rem;
+        }
+
+        /* Estilos para a seção hero */
+        .home {
+            background: url('') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.9);
+            z-index: 0;
+        }
+
+        .dark-theme .home::before {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .home__container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .home__title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: rgba(53, 151, 207, 0.911);
+            line-height: 1.2;
+        }
+
+        .home__description {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            color: var(--text-color);
+            max-width: 600px;
+        }
+
+        /* Estilos para a seção de procedimentos */
+        .celebrate {
+            background-color: var(--body-color);
+            max-width: 1400px;
+        }
+
+        .celebrate__container {
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .section__title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--title-color);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section__title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Estilos para o footer */
+        .footer {
+            text-align: center;
+            padding: 1rem 0px;
+            margin-top: 4rem;
+            background: var(--gradient);
+            color: white;
+            transition: background 0.5s ease;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+
+
+        .nav__link {
+            transition: var(--transition);
+            position: relative;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            color: var(--text-color);
+        }
+
+        .nav__link:hover {
+            color: var(--first-color);
+        }
+
+        .nav__link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .nav__link:hover::after {
+            width: 100%;
+        }
+
+        .active-link {
+            color: var(--first-color);
+        }
+
+        .active-link::after {
+            width: 100%;
+        }
+
+        /* Estilo para o tema toggle */
+        .change-theme {
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            color: var(--text-color);
+        }
+
+        .change-theme:hover {
+            transform: rotate(1deg) scale(1.1);
+            color: var(--first-color);
+        }
+
+        /* Ícones específicos para cada tema */
+        .bx-sun {
+            display: none;
+        }
+
+        .dark-theme .bx-moon {
+            display: none;
+        }
+
+        .dark-theme .bx-sun {
+            display: block;
+        }
+
+        /* Efeito de hover para o logo */
+        .nav__logo {
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--title-color);
+            text-decoration: none;
+        }
+
+        .nav__logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav__logo-img {
+            transition: var(--transition);
+            height: 30px;
+            width: auto;
+        }
+
+        .nav__logo:hover .nav__logo-img {
+            transform: rotate(15deg);
+        }
+
+        /* Efeito de onda animado */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('assets/img/wave.svg') repeat-x;
+            background-size: 1000px 100px;
+            animation: wave 15s linear infinite;
+            opacity: 0.1;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            animation-duration: 20s;
+            opacity: 0.05;
+            bottom: 10px;
+        }
+
+        @keyframes wave {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1000px; }
+        }
+
+        /* Animação de flutuação para a imagem */
+        .home__img {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Efeito de brilho nos cards */
+        .card-glow {
+            position: relative;
+        }
+
+        .card-glow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--gradient);
+            z-index: -1;
+            border-radius: calc(var(--radius) + 2px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card-glow:hover::before {
+            opacity: 0.6;
+            filter: blur(5px);
+        }
+    </style>
+
+    <title>LogArm - Controle de Estoque Inteligente</title>
+</head>
+
+<body class="light-theme">
+    <!--==================== HEADER ====================-->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#" class="nav__logo">
+                <img src="assets/img/favicon.png" alt="Logo LogArm" class="nav__logo-img">
+                LogArm
+            </a>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="#" class="nav__link active-link">Início</a></li>
+                    <li class="nav__item"><a href="Lista.html" class="nav__link">Registro</a></li>
+                    <li class="nav__item"><a href="Estoque-Saida.html" class="nav__link">Estoque-Saída</a></li>
+                    <li class="nav__item"><a href="Estoque-Entrada.html" class="nav__link">Estoque-Entrada</a></li>
+                </ul>
+
+                <div class="nav__close" id="nav-close">
+                    <i class='bx bx-x'></i>
+                </div>
+            </div>
+
+            <div class="nav__btns">
+                <i class='bx bx-moon change-theme' id="theme-button"></i>
+                <i class='bx bx-sun change-theme' id="theme-button" style="display: none;"></i>
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!--==================== MAIN ====================-->
+    <main class="main">
+        <!--==================== HERO SECTION ====================-->
+        <section class="home" id="home">
+
+            <div class="home__container container grid">
+                <div class="home__data">
+                    <h2 class="home__title">Controle de Estoque Inteligente</h2>
+                    <p class="home__description">
+                    </p>
+                    <br>
+                    <div class="home__buttons">
+                        <a href="Estoque-Saida.html" class="button button--primary card-glow">
+                            <i class='bx bx-log-out'></i> Saída de Estoque
+                        </a>
+                        <a href="Estoque-Entrada.html" class="button button--primary card-glow">
+                            <i class='bx bx-log-in'></i> Entrada no Estoque
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--==================== PROCEDURES SECTION ====================-->
+        <section class="celebrate section" id="celebrate">
+            <div class="celebrate__container container grid">
+                <div class="celebrate__data">
+                    <h2 class="section__title">Nossas Funcionalidades</h2>
+                    <div class="footer__links">
+                        <a href="Lista.html" class="button card-glow">
+                            <i class='bx bx-list-ul'></i> Registro Completo
+                        </a>
+                        <a href="Estoque.html" class="button card-glow">
+                            <i class='bx bx-search-alt'></i> Consulta Rápida
+                        </a>          
+                        <a href="Tabela.html" class="button card-glow">
+                            <i class='bx bx-data'></i> Gestão de Estoque
+                        </a>  
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!--==================== FOOTER ====================-->
+    <footer class="footer section">
+        <div class="footer__container container">
+            <p>© 2025 LogArm. Todos os direitos reservados.<br>
+                Desenvolvido com  por Mateus Macedo</p> 
+        </div>
+    </footer>
+
+    <!--==================== SCROLL UP ====================-->
+    <a href="#" class="scrollup" id="scroll-up" aria-label="Voltar ao topo">
+        <i class='bx bx-up-arrow-alt scrollup__icon'></i>
+    </a>
+
+
+    
+
+        <!--=============== SCRIPTS ===============-->
+    <script src="./js/scrollreveal.min.js"></script>
+    <script src="./js/swiper-bundle.min.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+</html>

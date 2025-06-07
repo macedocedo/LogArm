@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--=============== FAVICON ===============-->
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+
+  <!--=============== BOXICONS ===============-->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+
+  <!--=============== SWIPER CSS ===============--> 
+  <link rel="stylesheet" href="./css/swiper-bundle.min.css" />
+
+  <!--=============== CSS ===============-->
+  <link rel="stylesheet" href="./css/styles1.css" />
+
+  <title>AppLogNext</title>
+
+  <style>
+    .horizontal-scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 20px;
+      padding: 20px;
+      scroll-snap-type: x mandatory;
+      width: 100vw;
+      height: 88vh;
+    }
+
+    .horizontal-scroll-container::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .horizontal-scroll-container::-webkit-scrollbar-thumb {
+      background-color: #ffffff00;
+      border-radius: 10px;
+    }
+
+    .grid-item {
+      background-color: rgba(0, 0, 0, 0);
+      border-radius: 8px;
+      width: 92vw;
+      max-width: 400px;
+      height: 80vh;
+      text-align: center;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: 45%;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .grid-item h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .grid-item p {
+      font-size: 18px;
+      color: #000000;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      margin: auto;
+      max-width: 900px; /* mobile */
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    select,
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #000000;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      background-color: #949694;
+      color: rgb(0, 0, 0);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .saved-data {
+      margin: 0 auto;
+      max-width: 850px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .saved-data h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    ul#data-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul#data-list li {
+      background: #828585;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      position: relative;
+      font-size: 16px;
+    }
+
+    .action-btns {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-btns button {
+      flex: 1;
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    .delete-btn {
+      background-color: #e53835;
+      color: #000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .edit-btn {
+      background-color: #45a049;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+
+    /* Tema claro (padrão) */
+    :root {
+      --table-bg: #ffffff;
+      --table-text: #000000;
+      --table-border: #cccccc;
+      --table-header-bg: #eaeaea;
+    }
+
+    /* Tema escuro */
+    body.dark-theme {
+      --table-bg: #1e1e1e;
+      --table-text: #ffffff;
+      --table-border: #444;
+      --table-header-bg: #333;
+    }
+
+
+    table {
+      width: 100%;
+      max-width: 800px;
+      margin: 20px auto; /* centraliza horizontalmente */
+      border-collapse: collapse;
+      font-size: 15px;
+      background-color: var(--table-bg);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      color: var(--table-text);
+    }
+    
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid var(--table-border);
+    }
+
+    th {
+      background-color: var(--table-header-bg);
+      font-weight: bold;
+    }
+
+    td button {
+      margin-right: 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+
+    /* RESPONSIVO - modo "cards" para tabela no mobile */
+    @media (max-width: 900px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead tr {
+        display: none; /* esconde cabeçalho */
+      }
+
+      tbody tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--table-border);
+        border-radius: 8px;
+        padding: 10px;
+        background: var(--table-bg);
+      }
+
+      tbody td {
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+        border: none;
+        border-bottom: 1px solid var(--table-border);
+        white-space: normal;
+        word-wrap: break-word;
+      }
+
+      tbody td::before {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 45%;
+        white-space: nowrap;
+        font-weight: bold;
+        content: attr(data-label);
+      }
+
+      tbody td:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    .edit-icon,
+    .delete-icon {
+      font-size: 20px;
+      cursor: pointer;
+      margin: 0 5px;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .edit-icon:hover {
+      background-color: #45a049;
+      color: #fff;
+    }
+
+    .delete-icon:hover {
+      background-color: #e53835;
+      color: #fff;
+    }
+
+
+  </style>
+</head>
+<body>
+  <!--==================== HEADER ====================-->
+  <header class="header" id="header">
+    <nav class="nav container">
+      <a href="index.html" class="nav__logo">
+        <img src="assets/img/favicon.png" alt="" class="nav__logo-img" />
+        LogNext
+      </a>
+
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="index.html" class="nav__link active-link">Início</a></li>
+          <li class="nav__item"><a href="Estoque-Entrada.html" class="nav__link">Entrada</a></li>
+          <li class="nav__item"><a href="Estoque-Saida.html" class="nav__link">Saida</a></li>
+          <li class="nav__item"><a href="Filtro.html" class="nav__link">Calculo</a></li>
+        </ul>
+
+        <div class="nav__close" id="nav-close">
+          <i class="bx bx-x"></i>
+        </div>
+
+      </div>
+
+      <div class="nav__btns">
+        <i class="bx bx-moon change-theme" id="theme-button"></i>
+        <div class="nav__toggle" id="nav-toggle">
+          <i class="bx bx-grid-alt"></i>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <h1>Controle de Estoque</h1>
+
+  <div class="saved-data">
+    <h2>Histórico de Movimentações</h2>
+
+    <label for="operation-filter">Filtrar por tipo:</label>
+    <select id="operation-filter" onchange="filterStockList()">
+      <option value="Todos">Todos</option>
+      <option value="Entrada">Entrada</option>
+      <option value="Saida">Saída</option>
+    </select>
+
+    <input
+      type="text"
+      id="search-input"
+      placeholder="Buscar por c ódigo ou observações..."
+      oninput="filterStockList()"
+    />
+      <button onclick="importFromExcel()">📂 Importar Excel ⬇️</button>
+      <button onclick="exportToExcel()">📂 Exportar para Excel ⬆️</button>
+
+      <div style="margin-top: 20px;">
+      <input type="file" id="import-file" accept=".xlsx, .xls" />
+    </div>
+
+
+    
+
+    <table id="data-table">
+      <thead>
+        <tr>
+      <th>Tipo</th>
+      <th>Código</th>
+      <th>Data</th>
+      <th>Quantidade</th>
+      <th>Prateleira</th>
+      <th>Observações</th>
+      <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script>
+    let stockData = JSON.parse(localStorage.getItem("estoqueData")) || [];
+    let stockBalance = JSON.parse(localStorage.getItem("estoqueSaldo")) || {}; // Novo objeto para saldos
+    let editIndex = -1;
+
+    function formatCurrency(value) {
+      value = value.replace(/\D/g, "");
+      value = (parseFloat(value) / 100).toFixed(2) + "";
+      value = value.replace(".", ",");
+      value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+      return "R$ " + value;
+    }
+
+    function exportToExcel() {
+      const table = document.getElementById("data-table");
+      const wb = XLSX.utils.table_to_book(table, { sheet: "Estoque" });
+      XLSX.writeFile(wb, "controle_estoque.xlsx");
+    }
+
+    function filterStockList() {
+      const searchTerm = document.getElementById("search-input").value.toLowerCase();
+      const operationFilter = document.getElementById("operation-filter").value;
+      const tbody = document.querySelector("#data-table tbody");
+      tbody.innerHTML = "";
+
+      stockData.forEach((item, index) => {
+        const name = String(item.name || "").toLowerCase();
+        const notes = String(item.notes || "").toLowerCase();
+
+        const matchesSearch = name.includes(searchTerm) || notes.includes(searchTerm);
+        const matchesOperation = operationFilter === "Todos" || item.operation === operationFilter;
+
+        if (matchesSearch && matchesOperation) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td data-label="Tipo">${item.operation}</td>
+            <td data-label="Código">${item.name}</td>
+            <td data-label="Data">${item.date}</td>
+            <td data-label="Quantidade">${item.quantity}</td>
+            <td data-label="Prateleira">${item.prateleira}</td>
+            <td data-label="Observações">${item.notes || "Sem observações"}</td>
+            <td data-label="Ações">
+              <i class='bx bx-edit edit-icon' title="Editar" onclick="editarItem(${index})"></i>
+              <i class='bx bx-trash delete-icon' title="Excluir" onclick="excluirItem(${index})"></i>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        }
+      });
+    }
+
+
+      function editarItem(index) {
+          const item = stockData[index];
+          const novoNome = prompt("Código:", item.name);
+          const novaQtd = prompt("Quantidade:", item.quantity);
+          const novaPrateleira = prompt("Prateleira:", item.prateleira);
+          const novasObs = prompt("Observações:", item.notes);
+
+          if (novoNome && novaQtd) {
+              stockData[index] = {
+                  operation: item.operation,
+                  name: novoNome,
+                  date: item.date,
+                  quantity: parseInt(novaQtd),
+                  prateleira: novaPrateleira || item.prateleira,
+                  notes: novasObs || ""
+              };
+              localStorage.setItem("estoqueData", JSON.stringify(stockData));
+              filterStockList();
+          }
+      }
+
+
+
+      function excluirItem(index) {
+        if (confirm("Tem certeza que deseja excluir este item?")) {
+          stockData.splice(index, 1);
+          localStorage.setItem("estoqueData", JSON.stringify(stockData));
+          filterStockList();
+        }
+      }
+
+
+      document.addEventListener("DOMContentLoaded", function () {
+        filterStockList();
+      });
+
+            function adicionarOuAtualizarItem(novoItem) {
+          const indexExistente = stockData.findIndex(item => item.name === novoItem.name);
+
+          if (indexExistente !== -1) {
+            stockData[indexExistente].quantity =
+              parseInt(stockData[indexExistente].quantity) + parseInt(novoItem.quantity);
+          } else {
+            stockData.push(novoItem);
+          }
+
+          localStorage.setItem("estoqueData", JSON.stringify(stockData));
+          filterStockList();
+        }
+
+    function importFromExcel() {
+      const fileInput = document.getElementById("import-file");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Selecione um arquivo para importar.");
+        alert("Lembre-se de adicionar apenas entradas.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const importedData = XLSX.utils.sheet_to_json(firstSheet);
+
+          let importedCount = 0;
+          let skippedCount = 0;
+
+          importedData.forEach(item => {
+            // Validação dos campos obrigatórios
+            const nome = String(item["Código"] || item["Código do Produto"] || "").trim();
+            let quantidade = parseInt(item["Quantidade"] || item["Qtd"] || 0);
+            
+            if (!nome || isNaN(quantidade)) {
+              skippedCount++;
+              return;
+            }
+
+            // Processamento do tipo (padrão para Entrada se não especificado)
+            let tipo = String(item["Tipo"] || item["Operação"] || "Entrada").trim();
+            tipo = tipo === "Saída" ? "Saida" : tipo; // Padroniza o nome
+            tipo = ["Entrada", "Saida"].includes(tipo) ? tipo : "Entrada";
+
+            // Processamento da data
+            let data = item["Data"];
+            if (typeof data === "number") {
+              // Converter data do formato Excel
+              const excelEpoch = new Date(Date.UTC(1899, 11, 30));
+              const convertedDate = new Date(excelEpoch.getTime() + data * 86400000);
+              data = convertedDate.toLocaleDateString("pt-BR");
+            } else if (!data) {
+              data = new Date().toLocaleDateString("pt-BR");
+            } else {
+              data = String(data);
+            }
+
+            // Processamento das observações
+            const obs = String(item["Observações"] || item["Obs"] || item["Notas"] || "").trim();
+
+            // SEMPRE adiciona como novo registro, mesmo que já exista um com o mesmo nome
+            // Processamento da prateleira
+
+            let prateleira = item["Prateleira"] || item["Local"] || "";
+
+            const novoItem = {
+                operation: tipo,
+                name: nome,
+                date: data,
+                quantity: quantidade,
+                prateleira: String(prateleira),
+                notes: obs
+            };
+
+            stockData.push(novoItem);
+            importedCount++;
+          });
+
+          localStorage.setItem("estoqueData", JSON.stringify(stockData));
+          filterStockList();
+          
+          alert(`Importação concluída!\nNovos registros adicionados: ${importedCount}\nRegistros ignorados: ${skippedCount}`);
+        } catch (error) {
+          console.error("Erro na importação:", error);
+          alert("Ocorreu um erro durante a importação. Verifique o formato do arquivo.");
+        }
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+
+
+  </script>
+
+  <script src="./js/scrollreveal.min.js"></script>
+  <script src="./js/swiper-bundle.min.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
