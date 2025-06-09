@@ -5,7 +5,7 @@
 
 # Responsive Website https://macedocedo.github.io/LogArm/
 
-# 📦 Aplicativo de Fluxo Logístico para Loja
+# 📦 Aplicativo de Fluxo Logístico para Estoque
 
 Este é um aplicativo web em desenvolvimento voltado para o controle e automação do fluxo logístico de uma loja. Ele contempla funcionalidades essenciais para o gerenciamento de estoque e registro de clientes, com uma interface responsiva e moderna.
 
