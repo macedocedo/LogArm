@@ -219,7 +219,7 @@
         }
 
         .home__container {
-            display: grid;
+            display: flex;
             grid-template-columns: 1fr 1fr;
             align-items: center;
             gap: 4rem;
@@ -632,15 +632,6 @@
     <script src="./js/main.js"></script>
     
     <script>
-        // Show scroll up button when scrolling
-        window.addEventListener('scroll', function() {
-            const scrollUp = document.getElementById('scroll-up');
-            if (this.scrollY >= 200) {
-                scrollUp.classList.add('show-scroll');
-            } else {
-                scrollUp.classList.remove('show-scroll');
-            }
-        });
         
         // Theme toggle functionality
         const themeButton = document.getElementById('theme-button');
