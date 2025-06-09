@@ -26,11 +26,11 @@ Alternância entre temas light e dark para uma melhor experiência visual.
 Dados salvos em cache local com exibição dos registros anteriores.
 
 🛠️ Tecnologias Utilizadas
-HTML
+- HTML
 
-CSS
+- CSS
 
-JavaScript
+- JavaScript
 
 🔄 Próximas Implementações
 🔗 Integração com Banco de Dados
