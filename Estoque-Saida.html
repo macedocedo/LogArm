@@ -404,15 +404,13 @@
       const list = document.getElementById("data-list");
       list.innerHTML = "";
 
-      // Objeto para rastrear o estoque atual de cada item
       const currentStocks = {};
-      
-      // Primeiro calculamos o estoque atual de todos os itens
+
       stockData.forEach(item => {
         if (!currentStocks[item.name]) {
           currentStocks[item.name] = 0;
         }
-        
+
         if (item.operation === "Entrada") {
           currentStocks[item.name] += item.quantity;
         } else if (item.operation === "Saida") {
@@ -420,15 +418,16 @@
         }
       });
 
-      // Agora exibimos todos os itens que correspondem ao termo de busca
       stockData.forEach((item, index) => {
+        if (item.operation !== "Entrada") return; // 👉 FILTRA APENAS ENTRADAS
+
         const name = item.name.toLowerCase();
         const notes = (item.notes || "").toLowerCase();
 
         if (name.includes(searchTerm) || notes.includes(searchTerm)) {
           const li = document.createElement("li");
-          const icon = item.operation === "Entrada" ? "📥" : "📤";
-          
+          const icon = "📥"; // apenas entrada
+
           const currentStockForItem = Math.max(0, currentStocks[item.name] || 0);
           const balloonClass = currentStockForItem === 0 ? "stock-balloon stock-balloon-zero" : "stock-balloon";
           const stockBalloon = `<span class="${balloonClass}">Estoque: ${currentStockForItem} | Prateleira: ${item.prateleira}</span>`;
@@ -451,6 +450,7 @@
         }
       });
     }
+
 
     function updateStockSummary() {
       const summaryList = document.getElementById("stock-summary");
